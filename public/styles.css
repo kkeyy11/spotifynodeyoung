@@ -1,0 +1,32 @@
+body {
+    background-color: #343a40; /* Dark background */
+    color: #f8f9fa; /* Light text */
+}
+
+.list-group-item {
+    background-color: #495057; /* Darker item background */
+    color: #f8f9fa; /* Light text */
+}
+
+.list-group-item:hover {
+    background-color: #6c757d; /* Slightly lighter on hover */
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Original primary button color */
+    border-color: #007bff; /* Original border color */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Original secondary button color */
+    border-color: #6c757d; /* Original border color */
+}
+
+.btn-success {
+    background-color: #28a745; /* Original success button color */
+    border-color: #28a745; /* Original border color */
+}

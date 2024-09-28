@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 Upload and Player</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Uploaded MP3 Files</h1>
+        
+        <!-- Audio Player -->
+        <audio id="audioPlayer" controls>
+            <source id="audioSource" src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <!-- List of MP3 Files -->
+        <ul class="list-group mt-4">
+            <% files.forEach(function(file, index) { %>
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-0"><%= file.file_name %></p>
+                        <button class="btn btn-secondary playBtn" data-index="<%= index %>">Play</button>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+
+        <div class="controls text-center mt-4">
+            <button id="prevBtn" class="btn btn-primary">Previous</button>
+            <button id="playBtn" class="btn btn-success">Play/Pause</button>
+            <button id="nextBtn" class="btn btn-primary">Next</button>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/add" class="btn btn-primary">Upload New MP3</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional, for features like modals) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Array of audio files' paths
+        const audioFiles = [
+            <% files.forEach(function(file) { %>
+                '<%= file.file_path %>',
+            <% }) %>
+        ];
+
+        let currentIndex = -1; // No song is currently playing
+
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioSource = document.getElementById('audioSource');
+        const playBtn = document.getElementById('playBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        // Load audio and play
+        function loadAudio(index) {
+            audioSource.src = audioFiles[index];
+            audioPlayer.load();
+            audioPlayer.play();
+        }
+
+        // Play button event for list items
+        $('.playBtn').on('click', function() {
+            const index = $(this).data('index');
+            currentIndex = index;
+            loadAudio(currentIndex);
+        });
+
+        // Play/Pause button
+        playBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        });
+
+        // Next button
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % audioFiles.length; // Loop to the start
+            loadAudio(currentIndex);
+        });
+
+        // Previous button
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + audioFiles.length) % audioFiles.length; // Loop to the end
+            loadAudio(currentIndex);
+        });
+    </script>
+</body>
+</html>
